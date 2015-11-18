@@ -1,0 +1,152 @@
+ <!DOCTYPE html>
+  <html lang="en">
+      <head> 
+              <title>Hello Backbone.js!</title>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+              <script src="https://code.jquery.com/jquery-2.1.1.min.js"> </script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+
+              <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+              <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+              <style>
+               body{font-family: verdana;font-size: 20px}
+               table{width:100%;border-collapse:collapse;border: 1px solid black} 
+               table tr th {text-align: left;padding: 10px;background-color: #000; color: #fff}
+               table tr td {padding: 10px}
+               table tr:nth-child(even){background-color: #fff}
+               table tr:nth-child(odd){background-color: #9c9}
+               ul.unstyled li{list-style-type:none} 
+               ul.unstyled li input{width: 200px} 
+              </style>   
+      </head>
+          <body>
+               <h1>Contact Viewer</h1>
+               <table id="contactviewer"></table>
+
+            <h2>Add new User</h2>
+            <form>
+            <ul class="unstyled">
+            <li>
+                <input id="name" class="form-control" type="text" placeholder="Enter Your Name" required>
+            </li>
+            <li>
+                <input id="email" class="form-control" type="email" placeholder="Enter Your Email" required>
+            </li>
+
+            <li>
+                <input id="phone" class="form-control" type="text" placeholder="Enter Your Phone" required>
+            </li>
+
+            </ul>
+            <button class="btn-success" ><i class="icon-plus"></i>Add</button>
+        </form>
+
+               <script>
+
+                       //defining a Model 
+                       var MyModel = Backbone.Model.extend({
+
+                                 defaults: {
+
+                                     name: 'Adrian Statescu',
+
+                                     email: 'mergesortv@gmail.com',
+
+                                     phone: '012345678' 
+                                 }
+                       });
+
+
+                       //defining a Model 
+                       var MyTH = Backbone.Model.extend({
+
+                                 defaults: {
+
+                                     name: 'Name',
+
+                                     email: 'Email',
+
+                                     phone: 'Phone' 
+                                 }
+                       });
+
+                      var th = new MyTH();
+
+                      var mymodel = new MyModel()                  
+
+
+                       //defining a View
+                       var MyViewTH = Backbone.View.extend({
+
+                           model: th,
+
+                           tagName: 'tr',
+
+                           initialize: function() {
+
+                                 this.render();   
+                           },
+
+                           render: function() {
+
+                                 var renderString = '<th>'+ this.model.get('name') + '</th><th>'+ this.model.get('email') +'</th><th>'+ this.model.get('phone') +'</th>';
+
+                                 this.$el.html( renderString );
+                           }
+                       })
+
+                       var myviewth = new MyViewTH()
+
+                       //defining a View
+                       var MyView = Backbone.View.extend({
+
+                           model: mymodel,
+
+                           tagName: 'tr',
+
+                           initialize: function() {
+
+                                 this.render();   
+                           },
+
+                           render: function() {
+
+                                 var renderString = '<td>'+ this.model.get('name') + '</td><td>'+ this.model.get('email') +'</td><td>'+ this.model.get('phone') +'</td>';
+
+                                 this.$el.html( renderString );
+                           }
+                       })
+                         
+                       var myview = new MyView()
+
+                       var mymodel2 = new MyModel({name:'Andrew',email:'andrew@gmail.com',phone:'9876543'})
+                       var myview2 = new MyView({model: mymodel2})
+
+                       var mymodel3 = new MyModel({name:'Andrew2',email:'andrew2@gmail.com',phone:'98765431'})
+                       var myview3 = new MyView({model: mymodel3})
+
+                       var mymodel4 = new MyModel({name:'Andrew4',email:'andrew4@gmail.com',phone:'9876543143432'})
+                       var myview4 = new MyView({model: mymodel4})
+
+
+                       $('#contactviewer').append(myviewth.el)
+                       $('#contactviewer').append(myview.el)
+                       $('#contactviewer').append(myview2.el)
+                       $('#contactviewer').append(myview3.el)
+                       $('#contactviewer').append(myview4.el)
+
+                       $("form").submit(function(e){
+
+                             var newmodel = new MyModel({name: $("#name").val(),email: $("#email").val(),phone: $("#phone").val()})
+
+                             var newview = new MyView({model: newmodel})
+
+                                 $('#contactviewer').append(newview.el)
+
+                                 e.preventDefault();                            
+                       })
+
+               </script>
+          </body>
+  </html>
